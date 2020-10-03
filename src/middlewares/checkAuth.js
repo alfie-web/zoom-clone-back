@@ -16,7 +16,7 @@ module.exports = (req, res, next) => {
 
 	try {
 		const payload = jwt.verify(token, secret);
-		console.log('PAYLOAD_VERIFY_TOKEN', payload)
+		// console.log('PAYLOAD_VERIFY_TOKEN', payload)
 		if (payload.type !== 'access') {
 			return res.status(401).json({
 				status: 'error',

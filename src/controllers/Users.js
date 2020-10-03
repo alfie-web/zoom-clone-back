@@ -25,7 +25,7 @@ const updateTokens = (user) => {
 
 class UsersController {
 	getMe = (req, res) => {
-		console.log(req.user);
+		// console.log(req.user);
 		const id = req.user._id;
 
 		UserModel.findById(id)
@@ -42,6 +42,7 @@ class UsersController {
 	}
 	
 	signin = (req, res) => {
+		// console.log('LOGIN')
 		const postData = {
 			email: req.body.email,
 			password: req.body.password
@@ -57,10 +58,10 @@ class UsersController {
 			.exec()
 			.then((user) => {
 				if (bcrypt.compareSync(postData.password, user.password)) {
-					console.log('user', user)
+					// console.log('user', user)
 					updateTokens(user)
 						.then((tokens) => {
-							console.log('TOKENS', tokens)
+							// console.log('TOKENS', tokens)
 							return res.json({
 								status: 'success',
 								tokens
