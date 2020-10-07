@@ -6,6 +6,13 @@ dotEnv.config();
 const app = require('express')();
 const server = http.createServer(app);
 
+const { ExpressPeerServer } = require('peer');
+const peerServer = ExpressPeerServer(server, {
+	debug: true
+});
+
+app.use('/peerjs', peerServer);
+
 const connectDB = require('./core/db');
 const createRoutes = require('./routes');
 
