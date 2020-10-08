@@ -1,16 +1,102 @@
+
+// const users = [];
+
+// //addUser, removeUser, getUser, getUserInRoom
+
+// const addUser = ({ socketId, fullname, roomId, userId, signal }) => {
+// 	//Clean the data
+// 	fullname = fullname.trim().toLowerCase();
+// 	roomId = roomId.trim().toLowerCase();
+
+// 	//Validate the data
+// 	if (!fullname || !roomId || !userId) {
+// 		return {
+// 			error: 'Fullname and room are required!'
+// 		}
+// 	}
+
+// 	//Check for existing user
+// 	const existingUser = users.find((user) => {
+// 		return user.roomId === roomId && user.userId === userId;
+// 	});
+
+// 	//Validate fullname
+// 	if (existingUser) {
+// 		return {
+// 			error: 'Fullname is in use!'
+// 		}
+// 	}
+
+// 	//Store user
+// 	const user = { socketId, fullname, roomId, userId, signal };
+// 	users.push(user);
+// 	return { user };
+// };
+
+// const removeUser = (socketId) => {
+// 	const index = users.findIndex((user) => user.socketId === socketId);
+
+// 	if (index !== -1) {
+// 		return users.splice(index, 1)[0];
+// 	}
+// }
+
+// const removeUserById = (userId) => {
+// 	const index = users.findIndex((user) => user.userId === userId);
+
+// 	if (index !== -1) {
+// 		return users.splice(index, 1)[0];
+// 	}
+// }
+
+// const getUser = (socketId) => {
+// 	return users.find((user) => user.socketId === socketId);
+
+// };
+
+// const getUsersInRoom = (roomId) => {
+// 	return users.filter((user) => user.roomId === roomId.trim().toLowerCase());
+// };
+
+// module.exports = {
+// 	addUser,
+// 	removeUser,
+// 	removeUserById,
+// 	getUser,
+// 	getUsersInRoom
+// };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 const users = [];
 
 //addUser, removeUser, getUser, getUserInRoom
 
-const addUser = ({ socketId, fullname, roomId, userId, signal }) => {
+const addUser = ({ socketId, peerId, roomId, userId }) => {
 	//Clean the data
-	fullname = fullname.trim().toLowerCase();
 	roomId = roomId.trim().toLowerCase();
 
 	//Validate the data
-	if (!fullname || !roomId || !userId) {
+	if (!peerId || !roomId || !userId) {
 		return {
-			error: 'Fullname and room are required!'
+			error: 'peerId and room are required!'
 		}
 	}
 
@@ -19,15 +105,15 @@ const addUser = ({ socketId, fullname, roomId, userId, signal }) => {
 		return user.roomId === roomId && user.userId === userId;
 	});
 
-	//Validate fullname
+	//Validate peerId
 	if (existingUser) {
 		return {
-			error: 'Fullname is in use!'
+			error: 'peerId is in use!'
 		}
 	}
 
 	//Store user
-	const user = { socketId, fullname, roomId, userId, signal };
+	const user = { socketId, peerId, roomId, userId };
 	users.push(user);
 	return { user };
 };
@@ -64,6 +150,94 @@ module.exports = {
 	getUser,
 	getUsersInRoom
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// const users = [];
+
+// //addUser, removeUser, getUser, getUserInRoom
+
+// const addUser = ({ socketId, fullname, roomId, userId, signal }) => {
+// 	//Clean the data
+// 	fullname = fullname.trim().toLowerCase();
+// 	roomId = roomId.trim().toLowerCase();
+
+// 	//Validate the data
+// 	if (!fullname || !roomId || !userId) {
+// 		return {
+// 			error: 'Fullname and room are required!'
+// 		}
+// 	}
+
+// 	//Check for existing user
+// 	const existingUser = users.find((user) => {
+// 		return user.roomId === roomId && user.userId === userId;
+// 	});
+
+// 	//Validate fullname
+// 	if (existingUser) {
+// 		return {
+// 			error: 'Fullname is in use!'
+// 		}
+// 	}
+
+// 	//Store user
+// 	const user = { socketId, fullname, roomId, userId, signal };
+// 	users.push(user);
+// 	return { user };
+// };
+
+// const removeUser = (socketId) => {
+// 	const index = users.findIndex((user) => user.socketId === socketId);
+
+// 	if (index !== -1) {
+// 		return users.splice(index, 1)[0];
+// 	}
+// }
+
+// const removeUserById = (userId) => {
+// 	const index = users.findIndex((user) => user.userId === userId);
+
+// 	if (index !== -1) {
+// 		return users.splice(index, 1)[0];
+// 	}
+// }
+
+// const getUser = (socketId) => {
+// 	return users.find((user) => user.socketId === socketId);
+
+// };
+
+// const getUsersInRoom = (roomId) => {
+// 	return users.filter((user) => user.roomId === roomId.trim().toLowerCase());
+// };
+
+// module.exports = {
+// 	addUser,
+// 	removeUser,
+// 	removeUserById,
+// 	getUser,
+// 	getUsersInRoom
+// };
 
 
 
