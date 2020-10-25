@@ -15,7 +15,8 @@ routes.get('/me', checkAuth, userController.getMe);
 routes.post('/login', loginValidation, userController.signin);
 routes.post('/refresh-tokens', userController.refreshTokens);
 routes.delete('/remove-token', checkAuth, userController.removeToken);
-routes.post('/create', registerValidation, userController.create);
+routes.post('/register', registerValidation, userController.create);
+routes.post('/register/verify', userController.verify);
 // routes.patch('/update/:id', checkAuth, userController.update);
 // routes.delete('/delete/:id', checkAuth, userController.delete);
 

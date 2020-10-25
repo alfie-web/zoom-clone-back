@@ -4,6 +4,7 @@ const { v4 } = require('uuid');
 const bcrypt = require('bcrypt');
 // const { v4 } = require('uuid');
 
+const mailer = require('../core/mailer');
 const { generateAccessToken, generateRefreshToken, replaceDbRefreshToken } = require('./../helpers/authHelper');
 const { UserModel, TokenModel } = require('../models');
 
@@ -199,6 +200,9 @@ class UsersController {
 	}
 
 	
+
+
+	
 	getById = async (req, res) => {
 		const userId = req.params.id;
 
@@ -219,7 +223,13 @@ class UsersController {
 	}
 
 
-	create = (req, res) => {
+
+
+
+
+
+
+	create = async (req, res) => {
 		const postData = {
 			email: req.body.email,
 			password: req.body.password,
@@ -232,32 +242,87 @@ class UsersController {
 			return res.status(422).json({ errors: errors.array(), status: 'error', message: 'Некорректные данные' });
 		}
 
-		UserModel.findOne({ email: postData.email })
-			.then((findedUser) => {
-				if (findedUser) return res.status(403).json({
-					status: 'error',
-					message: 'Такой пользователь уже существует'
-				})
-				const user = new UserModel(postData);
-				user.save()
-				.then(createdUser => {
-						// shift += 1;	// сдвиг увеличился
-
-						return res.status(201).json({
-							status: 'success',
-							data: createdUser
-						})
-					})
-					.catch(() => res.status(500).json({
-						status: 'error',
-						message: 'Самсинг вент ронг'
-					}))
+		try {
+			const findedUser = await UserModel.findOne({ email: postData.email })
+			if (findedUser) return res.status(403).json({
+				status: 'error',
+				message: 'Такой пользователь уже существует'
 			})
-			.catch(() => res.status(500).json({
+
+			const user = new UserModel(postData);
+			await user.save();
+
+			res.json({
+				status: 'success',
+				data: user
+			})
+
+			let info = await mailer.sendMail({		// можно и так, но так дольше
+				from: '<admin@test.com>',
+				to: user.email, 
+				subject: "Подтверждение регистрации в Zoom",
+				html: `Для того, чтобы подтвердить почту, перейдите <a href="${process.env.CLIENT_URL}/register/verify?hash=${user.confirmHash}&user=${user._id}">по этой ссылке</a>`,
+			});
+
+			console.log(info)
+
+		} catch (e) {
+			res.status(500).json({
 				status: 'error',
 				message: 'Самсинг вент ронг'
-			}))
+			})
+		}
 	}
+
+
+
+
+
+
+
+	verify = (req, res) => {
+		const hash = req.body.hash;
+		const userId = req.body.user;
+
+		console.log(hash)
+
+		if (!hash) return res.status(404).json({
+			status: 'error',
+			message: 'Hash not found'
+		});
+
+		UserModel.findOne({ _id: userId, confirmHash: hash }).exec()		// .exec()   - преобразует результат в промис
+ 			.then(user => {
+				if (!user) {
+					 return res.status(400).json({
+						status: 'error',
+						message: 'Invalid hash'
+					})
+				}
+
+				user.confirmed = true;
+				user.save(err => {
+					if(err) return res.json({
+						status: 'error',
+						message: err
+					})
+
+					res.json({
+						status: 'success',
+						message: 'Account has been confirmed!'
+					});
+				})
+			 })
+			.catch((err) => {
+				res.status(404).json({
+					message: 'User not found',
+					err
+				})
+			})
+	}
+
+
+
 
 
 	// update = async (req, res) => {

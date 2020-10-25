@@ -10,7 +10,10 @@ class RoomsController {
 
 			res.json({
 				status: 'success',
-				data: rooms
+				data: {
+					items: rooms,
+					isLastPage: true
+				}
 			});
 
 		} catch (e) {
