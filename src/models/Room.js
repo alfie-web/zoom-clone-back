@@ -8,6 +8,12 @@ const schema = new Schema({
 	description: {
 		type: String,
 	},
+	date: {
+		type: String,
+	},
+	time: {
+		type: String,
+	},
 	author: {
 		type: Schema.Types.ObjectId,
 		ref: 'User'

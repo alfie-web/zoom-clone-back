@@ -11,7 +11,7 @@ const schema = new Schema({
 	password: {
 		type: String,
 		required: true,
-		select: false
+		select: false		// а там где понадобится, .select('+password')
 	},
 	confirmed: {
 		type: Boolean,
